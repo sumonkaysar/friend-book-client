@@ -1,14 +1,15 @@
 import { FaFacebook, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
 const Footer = () => {
 
   return (
     <section className="footer p-10 bg-neutral text-neutral-content">
-      <div className="flex items-center">
+      <Link to='/' className="flex items-center">
         <img className="w-12" src={logo} alt="" />
         <h2 className="text-xl font-semibold">FriendBook</h2>
-      </div>
+      </Link>
       <div>
         <span className="footer-title">Social</span>
         <div className="grid grid-flow-col gap-4">

@@ -4,10 +4,11 @@ import { FaBars } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import { ToastContainer } from "react-toastify";
+import logo from "../assets/logo.png";
 import 'react-toastify/dist/ReactToastify.css';
 
 const Root = () => {
-  const {user, logout} = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout().then(result => console.log(result)).catch(err => console.error(err))
@@ -21,9 +22,9 @@ const Root = () => {
     }
     <li><Link to='/about'>About</Link></li>
     {
-      user?.uid ? 
-      <li><button onClick={handleLogout} className="btn btn-accent rounded-lg text-white w-fit">Log Out</button></li>:
-      <li><Link to='/login'>Log In</Link></li>
+      user?.uid ?
+        <li><button onClick={handleLogout} className="btn btn-accent rounded-lg text-white w-fit">Log Out</button></li> :
+        <li><Link to='/login'>Log In</Link></li>
     }
   </>
 
@@ -39,11 +40,14 @@ const Root = () => {
               </label>
             </div>
             <div className="flex-1 mr-2 font-semibold text-lg md:text-2xl cursor-pointer hover:text-slate-500 transition-colors">
-              <Link to='/'>FriendBook</Link>
+              <Link className="flex items-center gap-4" to='/'>
+                <img className="w-12" src={logo} alt="" />
+                <span>FriendBook</span>
+              </Link>
             </div>
             <div className="flex-none hidden lg:block">
               <ul className="menu menu-horizontal">
-                { menuItems }
+                {menuItems}
               </ul>
             </div>
           </div>
@@ -57,7 +61,7 @@ const Root = () => {
       <div className="drawer-side">
         <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 bg-base-100">
-          { menuItems }
+          {menuItems}
         </ul>
       </div>
     </div>

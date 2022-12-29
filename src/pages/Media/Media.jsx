@@ -3,7 +3,6 @@ import Post from "../Shared/Post/Post";
 
 const Media = () => {
   const posts = useLoaderData();
-  console.log(posts);
 
   return (
     <div className="container mx-auto">
