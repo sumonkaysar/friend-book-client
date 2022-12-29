@@ -1,4 +1,6 @@
-const UsersUpdateModal = ({ currentUser, refetch }) => {
+import { toast } from "react-toastify";
+
+const UsersUpdateModal = ({ currentUser, refetch, setShowModal }) => {
 
   const { uid, name, email, photoURL, university, address } = currentUser;
 
@@ -10,31 +12,35 @@ const UsersUpdateModal = ({ currentUser, refetch }) => {
     const university = form.university.value;
     const address = form.address.value;
 
-    const user = {
-      name,
-      university,
-      address
+    if (name) {
+      const user = {
+        name,
+        university,
+        address
+      }
+
+      fetch(`https://friend-book-server.vercel.app/users/${uid}`, {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.acknowledged && data.modifiedCount > 0) {
+            setShowModal(false);
+            toast.success('Updated Successfully')
+            refetch();
+          }
+
+        }).catch(err => console.error(err));
     }
-
-    fetch(`https://friend-book-server.vercel.app/users/${uid}`, {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.acknowledged && data.modifiedCount > 0) {
-          refetch();
-        }
-
-      }).catch(err => console.error(err));
   }
 
   return (
     <div>
-      <input type="checkbox" id="my-modal-5" className="modal-toggle" />
+      <input type="checkbox" id="updatingModal" className="modal-toggle" />
       <form onSubmit={handleUpdateDetails} className="modal">
         <div className="modal-box w-11/12 max-w-5xl">
           <h3 className="font-bold text-lg">Edit Your Details:</h3>
@@ -64,7 +70,7 @@ const UsersUpdateModal = ({ currentUser, refetch }) => {
           </div>
           <div className="modal-action justify-start">
             <button className="btn btn-primary" type="submit">Save</button>
-            <label htmlFor="my-modal-5" className="btn">Cancel</label>
+            <label onClick={() => setShowModal(false)} htmlFor="updatingModal" className="btn">Cancel</label>
           </div>
         </div>
       </form>

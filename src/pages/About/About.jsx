@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaMapMarkerAlt, FaUniversity } from "react-icons/fa";
 import { AuthContext } from "../../contexts/AuthProvider";
 import UsersUpdateModal from "./UsersUpdateModal/UsersUpdateModal";
@@ -7,6 +7,8 @@ import userImg from '../../assets/user.png';
 
 const About = () => {
   const { user } = useContext(AuthContext);
+  const [showModal, setShowModal] = useState(false);
+
   const { data: currentUser = {}, refetch } = useQuery({
     queryKey: ['currentUser', user?.uid],
     queryFn: () => fetch(`https://friend-book-server.vercel.app/users?uid=${user?.uid}`).then(res => res.json())
@@ -16,7 +18,7 @@ const About = () => {
   return (
     <div className="relative mb-10">
       <section className="text-center w-full sm:w-[500px] mx-auto">
-        <label htmlFor="my-modal-5" className="btn btn-info btn-sm pt-3 pb-6 text-white absolute -top-6 right-0">Edit</label>
+        <label onClick={() => setShowModal(true)} htmlFor="updatingModal" className="btn btn-info btn-sm pt-3 pb-6 text-white absolute -top-6 right-0">Edit</label>
         <div className="avatar mx-auto">
           <div className="w-24 rounded-full border-4 border-gray-400">
             <img src={photoURL ? photoURL : userImg} />
@@ -46,7 +48,9 @@ const About = () => {
             }
           </h3>
         </div>
-        <UsersUpdateModal currentUser={currentUser} refetch={refetch} />
+        {
+          showModal && <UsersUpdateModal currentUser={currentUser} refetch={refetch} setShowModal={setShowModal} />
+        }
       </section>
     </div>
   );
