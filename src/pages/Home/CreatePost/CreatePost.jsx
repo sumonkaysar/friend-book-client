@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../../contexts/AuthProvider";
 
 const CreatePost = () => {
@@ -43,6 +44,7 @@ const CreatePost = () => {
               })
                 .then(res => res.json())
                 .then(data => {
+                  toast.success('Added post')
                   navigate("/media");
 
                 }).catch(err => console.error(err));
@@ -70,8 +72,9 @@ const CreatePost = () => {
 
   return (
     <section className="container mx-auto">
-      <h2 className="text-2xl font-semibold text-center my-5">Create A Post:</h2>
-      <form className="card flex-shrink-0 w-full sm:w-[500px] lg:w-[700px] mx-auto shadow-2xl bg-base-100" onSubmit={handlePost}>
+      <h3 className="text-2xl font-semibold text-center my-5">Create A Post:</h3>
+      {
+        user?.uid ? <form className="card flex-shrink-0 w-full sm:w-[500px] lg:w-[700px] mx-auto shadow-2xl bg-base-100" onSubmit={handlePost}>
         <div className="card-body">
           <div className="form-control">
             <label className="label" htmlFor="text">
@@ -104,10 +107,12 @@ const CreatePost = () => {
             }
           </div>
           <div className="form-control mt-6">
-            <button className="btn btn-primary">Login</button>
+            <button className="btn btn-primary">Post</button>
           </div>
         </div>
-      </form>
+      </form>:
+      <h3 className="text-xl text-center my-5">To create a post you must <Link className="font-semibold text-blue-600 underline" to='/login'>login</Link> first.</h3>
+      }
     </section>
   );
 }

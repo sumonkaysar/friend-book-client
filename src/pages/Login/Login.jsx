@@ -1,14 +1,53 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/AuthProvider";
 
 const Login = () => {
   const { login, loginWithProvider } = useContext(AuthContext);
+  const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const googleProvider = new GoogleAuthProvider();
+
+  const from = location?.state?.from?.pathname || '/';
+
+  const handleLogin = e => {
+    e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    setLoginError('');
+    login(email, password)
+    .then(result => {
+      toast.success("Logged in successfully");
+      navigate(from);
+    })
+    .catch(err => {
+      console.error(err);
+      switch (err.message.split("auth/")[1].split(")")[0]) {
+        case "user-not-found":
+          setLoginError("The user is not registered");
+          break;
+
+        case "wrong-password":
+          setLoginError("Password is Incorrect");
+          break;
+
+        case "too-many-requests":
+          setLoginError(err.message.split("(auth/")[0].split(": ")[1]);
+          break;
+      
+        default:
+          setLoginError(err.message);
+          break;
+      }
+    });
+  }
+
   const handleGoogleLogin = () => {
     loginWithProvider(googleProvider)
       .then(result => {
@@ -30,32 +69,36 @@ const Login = () => {
       },
       body: JSON.stringify(user)
     })
-    .then(res => res.json())
-    .then(data => {
-      navigate('/');
-    })
-    .catch(err => console.error(err));
+      .then(res => res.json())
+      .then(data => {
+        navigate('/');
+      })
+      .catch(err => console.error(err));
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mx-auto">
+    <div className="container mx-auto mb-6">
+      <form onSubmit={handleLogin} className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mx-auto">
         <div className="card-body">
+          <h2 className="text-2xl text-center font-bold">Login Here</h2>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
             </label>
-            <input type="text" placeholder="email" className="input input-bordered" />
+            <input type="email" name="email" placeholder="email" className="input input-bordered" />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <input type="text" placeholder="password" className="input input-bordered" />
+            <input type="password" name="password" placeholder="password" className="input input-bordered" />
             <label className="label">
               <Link to="" className="label-text-alt link link-hover">Forgot password?</Link>
             </label>
           </div>
+          {
+            loginError && <p className="text-red-600">{loginError}</p>
+          }
           <div className="form-control mt-4">
             <button className="btn btn-primary">Login</button>
           </div>
@@ -65,7 +108,7 @@ const Login = () => {
             <button onClick={handleGoogleLogin} type="button" className="btn btn-primary btn-outline">Login With Google</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

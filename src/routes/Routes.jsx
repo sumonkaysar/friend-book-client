@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../layouts/Root";
-import About from "../pages/About";
+import About from "../pages/About/About";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Media from "../pages/Media/Media";
@@ -32,11 +32,15 @@ const router = createBrowserRouter([
       },
       {
         path: 'post-details/:id',
-        element: <PostDetails />,
+        element: <PrivateRoute><PostDetails /></PrivateRoute>,
       },
       {
         path: 'about',
         element: <PrivateRoute><About /></PrivateRoute>,
+      },
+      {
+        path: 'message',
+        element: <h1 className="text-center text-3xl font-bold mb-6">Message is not developed yet</h1>,
       },
     ]
   }

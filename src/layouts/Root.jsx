@@ -1,15 +1,30 @@
 import { Link, Outlet } from "react-router-dom";
 import Footer from "../pages/Shared/Footer";
 import { FaBars } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Root = () => {
+  const {user, logout} = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout().then(result => console.log(result)).catch(err => console.error(err))
+  }
 
   const menuItems = <>
     <li><Link to='/'>Home</Link></li>
     <li><Link to='/media'>Media</Link></li>
-    <li><Link to='/message'>Message</Link></li>
+    {
+      user?.uid && <li><Link to='/message'>Message</Link></li>
+    }
     <li><Link to='/about'>About</Link></li>
-    <li><Link to='/login'>Log In</Link></li>
+    {
+      user?.uid ? 
+      <li><button onClick={handleLogout} className="btn btn-accent rounded-lg text-white w-fit">Log Out</button></li>:
+      <li><Link to='/login'>Log In</Link></li>
+    }
   </>
 
   return (
@@ -34,6 +49,7 @@ const Root = () => {
           </div>
         </div>
         <div className="pt-28 pb-8 px-5">
+          <ToastContainer />
           <Outlet />
         </div>
         <Footer />

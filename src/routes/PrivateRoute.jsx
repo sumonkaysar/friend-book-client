@@ -8,7 +8,7 @@ const PrivateRoute = ({children}) => {
   const location = useLocation();
 
   if (loading) {
-    return <ClipLoader />
+    return <div className="text-center"><ClipLoader /></div>
   }
 
   if(user?.uid) {

@@ -20,7 +20,7 @@ const PostDetails = () => {
   
   useEffect(() => {
     setLiked(likers?.includes(user?.uid));
-  }, [user]);
+  }, [user?.uid, likers]);
   
   useEffect(() => {
     setPeopleLiked(likers?.length);
