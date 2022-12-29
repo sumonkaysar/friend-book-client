@@ -62,7 +62,7 @@ const Login = () => {
   }
 
   const saveUser = (user) => {
-    fetch('http://localhost:5000/users', {
+    fetch('https://friend-book-server.vercel.app/users', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

@@ -35,7 +35,7 @@ const CreatePost = () => {
                 time: new Date().getTime()
               }
               console.log(postData);
-              fetch("http://localhost:5000/posts", {
+              fetch("https://friend-book-server.vercel.app/posts", {
                 method: 'POST',
                 headers: {
                   'content-type': 'application/json'

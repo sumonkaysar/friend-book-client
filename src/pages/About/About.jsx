@@ -9,7 +9,7 @@ const About = () => {
   const { user } = useContext(AuthContext);
   const { data: currentUser = {}, refetch } = useQuery({
     queryKey: ['currentUser', user?.uid],
-    queryFn: () => fetch(`http://localhost:5000/users?uid=${user?.uid}`).then(res => res.json())
+    queryFn: () => fetch(`https://friend-book-server.vercel.app/users?uid=${user?.uid}`).then(res => res.json())
   });
   const { uid, name, email, photoURL, university, address } = currentUser;
 

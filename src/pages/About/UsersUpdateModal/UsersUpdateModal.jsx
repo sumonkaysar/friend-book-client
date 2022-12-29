@@ -16,7 +16,7 @@ const UsersUpdateModal = ({ currentUser, refetch }) => {
       address
     }
 
-    fetch(`http://localhost:5000/users/${uid}`, {
+    fetch(`https://friend-book-server.vercel.app/users/${uid}`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json'

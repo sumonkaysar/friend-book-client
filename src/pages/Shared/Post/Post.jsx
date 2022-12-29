@@ -9,7 +9,7 @@ const Post = ({ post }) => {
   const [postUser, setPostUser] = useState(null);
   
   useEffect(() => {
-    fetch(`http://localhost:5000/users?uid=${author.uid}`)
+    fetch(`https://friend-book-server.vercel.app/users?uid=${author.uid}`)
       .then(res => res.json())
       .then(data => {
         setPostUser(data);

@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'media',
-        loader: () => fetch('http://localhost:5000/posts'),
+        loader: () => fetch('https://friend-book-server.vercel.app/posts'),
         element: <Media />,
       },
       {

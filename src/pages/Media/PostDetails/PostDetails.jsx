@@ -8,7 +8,7 @@ const PostDetails = () => {
   const {id} = useParams();
   const { data: post = [], refetch } = useQuery({
     queryKey: ['post', id],
-    queryFn: () => fetch(`http://localhost:5000/posts/${id}`).then(res => res.json())
+    queryFn: () => fetch(`https://friend-book-server.vercel.app/posts/${id}`).then(res => res.json())
   });
 
   const {_id, text, images, author, likers} = post;
@@ -27,7 +27,7 @@ const PostDetails = () => {
   }, [likers]);
 
   useEffect(() => {
-    author?.uid && fetch(`http://localhost:5000/users?uid=${author?.uid}`)
+    author?.uid && fetch(`https://friend-book-server.vercel.app/users?uid=${author?.uid}`)
       .then(res => res.json())
       .then(data => {
         setPostUser(data);
@@ -41,7 +41,7 @@ const PostDetails = () => {
       setLiked(true);
     }
 
-    fetch(`http://localhost:5000/posts/${_id}`, {
+    fetch(`https://friend-book-server.vercel.app/posts/${_id}`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json'

@@ -4,7 +4,7 @@ import Post from "../../Shared/Post/Post";
 const PopularPosts = () => {
   const { data: posts = [], refetch } = useQuery({
     queryKey: ['posts', "mostLikes"],
-    queryFn: () => fetch(`http://localhost:5000/posts/popular`).then(res => res.json())
+    queryFn: () => fetch(`https://friend-book-server.vercel.app/posts/popular`).then(res => res.json())
   });
   return (
     <section className="container mx-auto my-28">
